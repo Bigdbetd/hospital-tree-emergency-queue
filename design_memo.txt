@@ -1,0 +1,28 @@
+Design Memo
+
+A tree fits the doctor reporting structure because each node represents a doctor
+and each child link represents a direct report. The root is the top manager,
+and the assignment limits each doctor to two reports. This is a general binary
+tree, not a binary search tree: names are placed according to reporting
+relationships rather than alphabetical comparisons. Recursive lookup checks a
+node, then its left and right subtrees. Insertion rejects missing parents,
+invalid sides, duplicate names, and occupied positions without replacing reports.
+Names act as identifiers here; a larger application should use unique doctor IDs.
+
+Preorder visits a manager before their reports, making it useful for displaying
+an organization from leadership downward or exporting its structure. Inorder
+visits the left reports, manager, and right reports. It provides a consistent
+layout order here, but it does not alphabetize this hierarchy. Postorder visits
+reports before managers, which suits aggregating departmental results or
+releasing a subtree's resources after its children. Each traversal builds one
+result list and visits every node once.
+
+The emergency queue uses an array-backed min-heap. Lower urgency numbers rise
+toward the root, so staff can inspect the next patient in constant time.
+Insertion and removal restore order along one path in logarithmic time,
+supporting a stream of arrivals and departures without repeatedly sorting every
+patient. Storage grows linearly with the queue. Empty operations return None.
+Equal urgency scores have no guaranteed arrival order; a production queue could
+add sequence numbers for fair tie breaking. Queued urgency values must remain
+unchanged unless the queue is rebuilt. This educational scale is not a clinical
+triage protocol, and actual treatment decisions require qualified staff.

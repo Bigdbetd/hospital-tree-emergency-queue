@@ -1,74 +1,41 @@
-# Doctor Reporting Tree & Emergency Queue
+# Doctor Reporting Tree and Emergency Queue
 
-This assignment simulates a medical management system built using non-linear data structures. Students will implement a custom binary tree to model a doctor reporting structure and a min-heap to manage patient urgency in an emergency room queue. These components provide practice in recursive methods, priority-based operations, and tree traversal techniques.
+Completed COMPSV Assignment 7 using Python's standard library.
 
-## Classes
+## Files
 
-### `DoctorNode` Class
-Represents a doctor in the reporting hierarchy.
+- `doctor_tree.py`: recursive parent lookup and preorder, inorder, postorder traversals.
+- `emergency_queue.py`: Patient objects and a custom array-backed min-heap.
+- `design_memo.txt`: 200–300 word explanation of the design and trade-offs.
+- `test_hospital.py`: example, validation, empty structure, and randomized heap tests.
 
-**Constructor**
-```python
-DoctorNode(name)
+## Run
+
+```bash
+python3 doctor_tree.py
+python3 emergency_queue.py
+python3 -m unittest -v
 ```
 
-**Attributes**
-- `name` (str): The doctor’s name.
-- `left` (DoctorNode or None): Reference to the left report.
-- `right` (DoctorNode or None): Reference to the right report.
+All 7 tests passed locally, including 500 randomized interleaved heap operations.
 
-### `DoctorTree` Class
-Manages the binary tree structure of doctor reports.
+## Behavior and complexity
 
-**Constructor**
-```python
-DoctorTree()
-```
+Set `tree.root = DoctorNode("Dr. Croft")`, then call
+`tree.insert(parent_name, employee_name, "left" or "right")`.
+Insertion returns a boolean and prints errors for invalid requests. Names must
+be unique. Traversals accept a node, return a list, and return `[]` for `None`.
+The hierarchy is a binary tree, not an alphabetically ordered search tree.
+Insertion takes O(n) time; traversal takes O(n) time, O(n) result storage,
+and O(h) recursion space for height h. A deeply skewed hierarchy can reach
+Python's recursion limit.
 
-**Attributes**
-- `root` (DoctorNode or None): Reference to the root doctor.
+Urgency is an integer from 1 to 10, with 1 most urgent. `peek()` and
+`remove_min()` return `None` when empty. Heap insert/remove take O(log n)
+time for reordering; Python list append is amortized O(1) and may occasionally
+resize in O(n). Peek takes O(1), printing O(n), and total queue storage O(n).
+Printed heap order is not fully sorted. Equal urgencies have no guaranteed
+arrival order. Do not modify a queued patient's urgency directly, because that
+can invalidate heap order. No `heapq` or sorting is used in the implementation.
 
-**Methods**
-- `insert(parent_name: str, employee_name: str, side: str) -> bool`
-  - Adds a new doctor under a specified parent node on the given side.
-- `preorder(node: DoctorNode) -> list`
-  - Returns a list of doctor names using preorder traversal.
-- `inorder(node: DoctorNode) -> list`
-  - Returns a list of doctor names using inorder traversal.
-- `postorder(node: DoctorNode) -> list`
-  - Returns a list of doctor names using postorder traversal.
-
----
-
-### `Patient` Class
-Represents a patient waiting for emergency care.
-
-**Constructor**
-```python
-Patient(name, urgency)
-```
-
-**Attributes**
-- `name` (str): The patient’s name.
-- `urgency` (int): A score from 1 to 10, where 1 is most urgent.
-
-### `MinHeap` Class
-Manages patients using a priority queue based on urgency.
-
-**Constructor**
-```python
-MinHeap()
-```
-
-**Attributes**
-- `data` (list): List of Patient instances. Index 0 is the most urgent patient.
-
-**Methods**
-- `insert(patient: Patient) -> None`
-  - Adds a new patient and reorders the heap.
-- `remove_min() -> Patient`
-  - Removes and returns the most urgent patient.
-- `peek() -> Patient`
-  - Returns the most urgent patient without removing.
-- `print_heap() -> None`
-  - Prints each patient and their urgency level.
+The provided demos reproduce the assignment's example outputs.
